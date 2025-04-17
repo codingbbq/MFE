@@ -24,6 +24,9 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Verify AWS Secrets
+        run: echo "AWS Access Key ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
+
       - name: Configure AWS CLI
         uses: shinyinc/action-aws-cli@v1.2
         with:
