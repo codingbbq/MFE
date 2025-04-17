@@ -25,11 +25,20 @@ jobs:
         run: npm run build
 
       - name: Configure AWS CLI
-        uses: shinyinc/action-aws-cli@v1.2
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: ${{ secrets.AWS_REGION }}  # e.g., "ap-northeast-1"
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          aws configure set region $AWS_REGION
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      
+      - name: Verify AWS CLI Installation
+        run: aws --version
+
+      - name: Debug AWS Credentials
+        run: aws sts get-caller-identity
 
       - name: Sync files to S3
         run: |
