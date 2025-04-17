@@ -1,15 +1,15 @@
-name: deploy-container
+name: deploy-marketing
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'packages/container/**'
+      - 'packages/marketing/**'
 
 defaults:
   run:
-    working-directory: packages/container
+    working-directory: packages/marketing
 
 jobs:
   build:
@@ -23,8 +23,6 @@ jobs:
 
       - name: Build project
         run: npm run build
-        env:
-          PRODUCTION_DOMAIN : ${{ secrets.PRODUCTION_DOMAIN }}
 
       - name: Configure AWS CLI
         run: |
@@ -44,12 +42,12 @@ jobs:
 
       - name: Sync files to S3
         run: |
-          aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_NAME }}/container/latest \
+          aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_NAME }}/marketing/latest \
             --region ${{ secrets.AWS_REGION }}  # Ensure region matches the bucket's region
       
       - name: Invalidate CloudFront Cache
         run: |
           aws cloudfront create-invalidation --distribution-id $AWS_DISTRIBUTION_ID \
-            --paths "/container/latest/index.html" \
+            --paths "/marketing/latest/remoteEntry.js" \
         env:
           AWS_DISTRIBUTION_ID: ${{ secrets.AWS_DISTRIBUTION_ID }}
