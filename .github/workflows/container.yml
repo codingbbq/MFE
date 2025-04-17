@@ -24,9 +24,6 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Verify AWS Secrets
-        run: echo "AWS Access Key ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
-
       - name: Configure AWS CLI
         uses: shinyinc/action-aws-cli@v1.2
         with:
@@ -36,5 +33,5 @@ jobs:
 
       - name: Sync files to S3
         run: |
-          aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_NAME }}/container/latest \
-            --region ${{ secrets.AWS_REGION }}  # Ensure region matches the bucket's region
+          aws s3 sync dist/ s3://mfe-codingbbq/container/latest \
+            --region ap-northeast-1  # Ensure region matches the bucket's region
