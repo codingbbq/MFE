@@ -26,3 +26,24 @@
 - Same will be applicable to other folders for other MFE
 
 
+## Requirements around Navigation
+1) Both the container and child apps need routing feature
+- Users can navigate around to different subapps using routing logic build into the Container.
+- Users can navigate around in a subapp using routing logic build into the subapp itself
+- Not all subapps will require routing
+
+2) Sub-apps might need to add in new pages/routes all the time
+- The container app needs to be able to load in new sub-apps at runtime without requiring to be re-deployed
+
+3) We might need to show two or more microfrontends on the same page
+- This will occur all the time if we have some kind of sidebar nav that is built as a separate microfrontend.
+
+4) Use off the shelf routing solutions
+- Building a routing library from scratch is a lot of work.
+
+5) We need navigation features for sub-apps in both hosted mode and in isolation
+- Developing or each environment should be easy - a developer should immediately be able to see what path they are visiting.
+
+6) If different apps need to communication information about routing, it should be done in as generic a fashion as possible
+- Each app might be using a completely different navigation framework
+- We might swap out or upgrade navigation libraries all the time - shouldn't affect the rest of the system
